@@ -107,7 +107,6 @@ public class VideoPlayer {
 		}
 		else
 			play(frameNumber);
-		System.out.println(frameNumber);
 	}
 
 	public void stopVideo() {

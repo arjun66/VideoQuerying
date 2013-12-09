@@ -81,12 +81,12 @@ public class MVMetric {
 
 				j++;
 			}
-			double value1 = (blue - green) * 1 / differenceFrames.size() ;//4.7;// Motion vector
-			double value2 = (yellow - red) * 2 / differenceFrames.size();//3; // Color
-			double value3 = (Y - dbY) * 0.2 / differenceFrames.size();//2.4; // Y
+			double value1 = (blue - green) * 2.8 / differenceFrames.size() ;	//4.7;// Motion vector
+			double value2 = (yellow - red) * 2 / differenceFrames.size();	//3; // Color
+			double value3 = (Y - dbY) * 2.0 / differenceFrames.size();		//2.4; // Y
 
-//			if(dbFrames.get(i).getVideoname().equals("wreck4"))
-//				System.out.println(value1 + ":" + value2 + ":" + value3 + "  - - " + dbFrames.get(i).getVideoname());
+			if(dbFrames.get(i).getVideoname().equals("wreck4"))
+				System.out.println(value1 + " : " + value2 + " : " + value3 + "  - - " + dbFrames.get(i).getVideoname());
 
 			double avg = (Math.abs(value2) + Math.abs(value1) + Math.abs(value3));
 			result.setSimilarity(avg);
@@ -143,15 +143,15 @@ public class MVMetric {
 			videoNames.add(result.getVideoname());
 		}
 
-		HashMap<String, Integer> videoData = new HashMap<>();
+//		HashMap<String, Integer> videoData = new HashMap<>();
 		for (String val : videoNames)
 		{
-			if(!videoData.containsKey(val))
-				videoData.put(val, 0);
-			else
-				videoData.put(val, videoData.get(val) + 1);
+//			if(!videoData.containsKey(val))
+//				videoData.put(val, 0);
+//			else
+//				videoData.put(val, videoData.get(val) + 1);
 			
-			if (!sortedListOfVideos.contains(val) && videoData.get(val) > 5)
+			if (!sortedListOfVideos.contains(val))// && videoData.get(val) > 20)
 				sortedListOfVideos.add(val);
 		}
 	}
@@ -278,21 +278,26 @@ public class MVMetric {
 				red = bytes[ind];
 				green = bytes[ind + height * width];
 				blue = bytes[ind + height * width * 2];
+				int pix = 0xff000000 | ((red & 0xff) << 16)
+						| ((green & 0xff) << 8) | (blue & 0xff);
+				img.setRGB(pixel, line, pix);
 
 				double[][] localrgb = new double[][] { { (red) },{ (green) },
 				 { (blue) } };
 				color += (Math.abs(red) + Math.abs(green) + Math.abs(blue)) / 3;
 				//color += Transforms.RGBtoHSV(red, green, blue);
 				double[][] yuv = Transforms.RGBtoYUV(localrgb); 
-				Y += (yuv[0][0] + yuv[1][0] + yuv[2][0]) / 3;
-				int pix = 0xff000000 | ((red & 0xff) << 16)
-						| ((green & 0xff) << 8) | (blue & 0xff);
-				img.setRGB(pixel, line, pix);
+				Y += yuv[0][0];
 				ind++;
 			}
 		}
 		if (frameIndex > 1) {
 			double difference = findMotionVector(img, 16);
+			
+			if(difference > -11 && difference < 11)
+				Y=0;
+			else
+				color=0;
 
 			differenceFrames.add(new MVData(new String[] { currentimage,
 					frameIndex + "", difference + "",

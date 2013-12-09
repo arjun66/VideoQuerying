@@ -5,10 +5,10 @@ public class Transforms
 	
 	public static double RGBtoHSV( float r, float g, float b)
 	{
-		double h;
+		double h=0;
 		float min, max, delta;
 		min = Math.min(r, Math.min(g, b ));
-		max = Math.max(r, Math.min(g, b ));
+		max = Math.max(r, Math.max(g, b ));
 		delta = max - min;
 		if( max == 0 )
 			return -1;
