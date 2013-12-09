@@ -1,11 +1,19 @@
 package view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import main.GlobalValues;
 import model.MetadataResults;
 
@@ -18,25 +26,28 @@ public class Interface {
 	VideoPlayerInterface fullVideo;
 
 	JPanel originalVideoPanel;
-	
+
 	ArrayList<MetadataResults> results;
 
 	public Interface() {
 		JFrame window = new JFrame();
-		window.setTitle("Video querying");
+		window.setTitle(GlobalValues.WINDOW_TITLE);
 		window.setLayout(null);
 		window.setVisible(true);
 		window.setAlwaysOnTop(true);
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getDefaultScreenDevice();
 		int screenWidth = gd.getDisplayMode().getWidth();
 		int screenHeight = gd.getDisplayMode().getHeight();
-		window.setBounds((screenWidth - ((width * 2) + 80))/2, (screenHeight - ((height * 2) + 100))/2, width * 2 + 80, height * 2 + 100);
+		window.setBounds((screenWidth - ((width * 2) + 80)) / 2,
+				(screenHeight - ((height * 2) + 100)) / 2, width * 2 + 80,
+				height * 2 + 100);
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// 1st panel
 		JPanel queryVideoPanel = new JPanel();
-		//queryVideoPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		// queryVideoPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		window.add(queryVideoPanel, BorderLayout.EAST);
 		queryVideoPanel.setLayout(null);
 		queryVideoPanel.setBounds(0, 0, window.getWidth() / 2,
@@ -48,7 +59,7 @@ public class Interface {
 
 		// 2nd panel
 		originalVideoPanel = new JPanel();
-		//originalVideoPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
+		// originalVideoPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
 		window.add(originalVideoPanel, BorderLayout.EAST);
 		originalVideoPanel.setLayout(null);
 		originalVideoPanel.setBounds(0, window.getHeight() / 2,
@@ -58,16 +69,12 @@ public class Interface {
 		fullVideo.setBounds(10, 10, width, height + 15);
 
 		// 3rd panel
-		JLabel title = new JLabel(GlobalValues.VIDEOLIST_TITLE);
-		title.setBounds(originalVideoPanel.getWidth(), 0, window.getWidth()
-				- originalVideoPanel.getWidth(), window.getHeight());
-		window.add(title);
 		videoList = new JPanel();
-		//videoList.setBorder(BorderFactory.createLineBorder(Color.blue));
 		window.add(videoList, BorderLayout.WEST);
 		videoList.setLayout(null);
-		videoList.setBounds(originalVideoPanel.getWidth(), 0, window.getWidth()
-				- originalVideoPanel.getWidth(), window.getHeight());
+		videoList.setBounds(originalVideoPanel.getWidth(), 40,
+				window.getWidth() - originalVideoPanel.getWidth(),
+				window.getHeight());
 	}
 
 	public void playQueryVideo(String filename) {
@@ -76,8 +83,9 @@ public class Interface {
 
 	public void setResults(ArrayList<String> table,
 			final ArrayList<MetadataResults> results) {
+
 		int j = 0;
-		this.results=results;
+		this.results = results;
 		for (int i = 0; i < table.size(); i++) {
 			final JButton button = new JButton(table.get(i));
 			button.setAlignmentX(Component.LEFT_ALIGNMENT);

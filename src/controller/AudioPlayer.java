@@ -56,14 +56,14 @@ public class AudioPlayer
 	public void stop()
 	{
 		clip.stop();
-		clip.close();
-		try {
-			audio.close();
-			bin.close();
-			is.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		clip.close();
+//		try {
+//			audio.close();
+//			bin.close();
+//			is.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

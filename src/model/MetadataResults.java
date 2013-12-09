@@ -4,6 +4,7 @@ public class MetadataResults {
 	String videoname;
 	int frameIndex;
 	double similarity;
+
 	public String getVideoname() {
 		return videoname;
 	}

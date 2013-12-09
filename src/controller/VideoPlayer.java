@@ -1,7 +1,6 @@
 package controller;
 
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,9 +13,8 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import view.Timeline;
-
 import main.GlobalValues;
+import view.Timeline;
 
 public class VideoPlayer {
 	int height = GlobalValues.HEIGHT;
@@ -32,20 +30,23 @@ public class VideoPlayer {
 	Timeline timeline;
 
 	Timer timer;
-	
+
 	boolean pause;
 
-	public VideoPlayer(String filename, JLabel player, Timeline timeline, boolean query) {
+	public VideoPlayer(String filename, JLabel player, Timeline timeline,
+			boolean query) {
 		this.player = player;
 		this.timeline = timeline;
 		if (query)
 			filename = GlobalValues.QUERY_CLIP_DIRECTORY_PATH + "//" + filename;
 		else
-			filename = GlobalValues.FULL_VIDEOS_DIRECTORY_PATH + "//" + filename + "//" + filename;
+			filename = GlobalValues.FULL_VIDEOS_DIRECTORY_PATH + "//"
+					+ filename + "//" + filename;
 		String videofilename = filename + ".rgb";
 		String audiofilename = filename + ".wav";
 		this.filename = videofilename;
 		audioPlayer = new AudioPlayer(audiofilename);
+		// a = new PlayWaveFile(audiofilename, 274);
 		images = new ArrayList<>();
 
 		parseVideo();
@@ -97,31 +98,26 @@ public class VideoPlayer {
 		}
 		images.add(img);
 	}
-	
-	public void pauseResume()
-	{
-		if(pause)
-			try {
-				timer.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+	public void pauseResume() {
+		if (pause)
+		{
+			stopVideo();
+			pause = false;
+		}
 		else
-			timer.notify();
-		pause=!pause;
+			play(frameNumber);
+		System.out.println(frameNumber);
 	}
-	
-	public void stopVideo()
-	{
+
+	public void stopVideo() {
 		timer.cancel();
-		timer=null;
-		player.setIcon(null);
+		timer = null;
 		audioPlayer.stop();
 	}
 
 	public void play(final int frame) {
-
+		pause=true;
 		if (timer != null) {
 			timer.cancel();
 		}

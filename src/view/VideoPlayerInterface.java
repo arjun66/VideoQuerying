@@ -15,9 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.VideoPlayer;
 import main.GlobalValues;
 import model.MetadataResults;
+import controller.VideoPlayer;
 
 public class VideoPlayerInterface extends JPanel {
 	/**
@@ -33,8 +33,8 @@ public class VideoPlayerInterface extends JPanel {
 	JLabel frame;
 
 	ArrayList<MetadataResults> results;
-	ArrayList<MetadataResults> frames;
-	double max, min;
+
+	double max = 0, min = 999999999;
 
 	public VideoPlayerInterface() {
 		super();
@@ -89,19 +89,22 @@ public class VideoPlayerInterface extends JPanel {
 			timeline.setBounds(timeline.getX(), height - 50,
 					timeline.getWidth(), 50);
 			graph.setBounds(0, 0, timeline.getWidth(), timeline.getHeight());
-			drawGraph(filename, graph.getWidth() , graph.getHeight());
+			drawGraph(filename, graph.getWidth(), graph.getHeight());
 		}
-		if(player!=null)
+		if (player != null)
 			player.stopVideo();
 		player = new VideoPlayer(filename, frame, timeline, query);
 	}
 
 	void drawGraph(String filename, int width, int height) {
-		frames = new ArrayList<>();
+		ArrayList<MetadataResults> frames = new ArrayList<>();
 
 		for (MetadataResults result : results) {
 			if (result.getVideoname().equals(filename))
 				frames.add(result);
+		}
+
+		for (MetadataResults result : results) {
 			if (max < result.getSimilarity())
 				max = result.getSimilarity();
 			if (min > result.getSimilarity())
@@ -115,15 +118,22 @@ public class VideoPlayerInterface extends JPanel {
 			int pix = 0xff000000 | (((byte) 255 & 0xff) << 16)
 					| (((byte) 255 & 0xff) << 8) | ((byte) 255 & 0xff);
 			int x = (i * width) / frames.size();
-			int y = height - (int) (((frames.get(i).getSimilarity() - min) * height) / (max - min));
-			if( x < width && y < height)
-				points.setRGB(x, y, pix);
-			// x = x - 1 < 0 ? x+1 : x;
-			// y = y - 1 < 0 ? y+1 : y;
-			// points.setRGB(x+1, y+1, pix);
-			// points.setRGB(x+1, y-1, pix);
-			// points.setRGB(x-1, y+1, pix);
-			// points.setRGB(x-1, y-1, pix);
+			double y = (((frames.get(i).getSimilarity() - min) * height) / (max - min));
+			if (frames.get(i).getSimilarity() == 0) {
+				for (int k = 0; k < height; k++) {
+					int line = 0xff000000 | (((byte) 255 & 0xff) << 16)
+							| (((byte) 0 & 0xff) << 8) | ((byte) 0 & 0xff);
+					points.setRGB(x, k, line);
+					try {
+						points.setRGB(x + 1, k, line);
+						points.setRGB(x + 2, k, line);
+					} catch (Exception e) {
+
+					}
+				}
+			}
+			if (x < width && y < height)
+				points.setRGB(x, (int) y, pix);
 		}
 		graph.setIcon(new ImageIcon(points));
 	}
