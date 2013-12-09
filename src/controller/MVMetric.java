@@ -13,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
 import main.GlobalValues;
 import main.Transforms;
@@ -114,41 +113,11 @@ public class MVMetric {
 								o2.getSimilarity());
 					}
 				});
-		
-//		HashMap<String, Double> videoData = new HashMap<>();
-//		int i = 0;
-//		while (i < sortedVideoSimilarityResult.size()) {
-//			String name = sortedVideoSimilarityResult.get(i).getVideoname();
-//			if (!videoData.containsKey(name)) {
-//				videoData.put(name, sortedVideoSimilarityResult.get(i)
-//						.getSimilarity());
-//			} else {
-//				double value = videoData.get(name);
-//				value += sortedVideoSimilarityResult.get(i).getSimilarity();
-//				videoData.put(name, value);
-//			}
-//			i++;
-//		}
-//
-//		Object[] s = videoData.values().toArray();
-//		Arrays.sort(s);
-//
-//		for (i = 0; i < s.length; i++) {
-//			for (int k = 0; k < videoData.size(); k++) {
-//				Object sum = videoData.values().toArray()[k];
-//				if (s[i] == sum) {
-//					sortedListOfVideos.add((String) videoData.keySet()
-//							.toArray()[k]);
-//				}
-//			}
-//		}
-
 		ArrayList<String> videoNames = new ArrayList<>();
 		for (MetadataResults result : sortedVideoSimilarityResult) {
 			videoNames.add(result.getVideoname());
 		}
 
-//		HashMap<String, Integer> videoData = new HashMap<>();
 		for (String val : videoNames)
 		{
 //			if(!videoData.containsKey(val))

@@ -32,7 +32,7 @@ public class Initialize {
 	}
 
 	public static void main(String[] args) {
-		new Initialize("query5");
+		new Initialize("query6");
 	}
 }
 

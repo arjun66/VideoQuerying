@@ -110,9 +110,12 @@ public class VideoPlayer {
 	}
 
 	public void stopVideo() {
-		timer.cancel();
-		timer = null;
-		audioPlayer.stop();
+		if(pause)
+		{
+			timer.cancel();
+			timer = null;
+			audioPlayer.stop();
+		}
 	}
 
 	public void play(final int frame) {
