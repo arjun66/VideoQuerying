@@ -81,11 +81,16 @@ public class MVMetric {
 
 				j++;
 			}
-			double value1 = (blue - green) * 2.8 / differenceFrames.size() ;	//4.7;// Motion vector
+			double value1 = (blue - green) * 17 / differenceFrames.size() ;	//4.7;// Motion vector
 			double value2 = (yellow - red) * 2 / differenceFrames.size();	//3; // Color
-			double value3 = (Y - dbY) * 2.0 / differenceFrames.size();		//2.4; // Y
+			double value3 = (Y - dbY) * 2 / differenceFrames.size();		//2.4; // Y
+			
+			if(value1 > 0 && value1 < 10)
+				value2*=12;
+			else
+				value3*=12;
 
-			if(dbFrames.get(i).getVideoname().equals("wreck4"))
+			if(dbFrames.get(i).getVideoname().equals("soccer1"))
 				System.out.println(value1 + " : " + value2 + " : " + value3 + "  - - " + dbFrames.get(i).getVideoname());
 
 			double avg = (Math.abs(value2) + Math.abs(value1) + Math.abs(value3));
